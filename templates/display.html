@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Display</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Arvo:700,400' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <style type="text/css">
+      .container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: stretch;
+        justify-content:space-around;
+        min-width: 90%;
+      }
+      body{
+        background-color:#39404A;
+        font-family: 'KoHo', sans-serif;
+        text-align: center;
+      }
+      .card:hover {
+        transform: translate3D(0,-1px,0) scale(1.05);
+        color: pink;
+      }
+     .heading-main{
+      text-align: center;
+      color: white;
+     }
+     .card{
+      padding: 20px;
+      border-color: white;
+     }
+     img{
+      width: 15rem;
+      height: 15rem;
+      object-fit: cover;
+      object-position: 20% 10%; /* try 20px 10px */
+      align-self: center;
+     }
+     .top-key{
+      color:white;
+      text-align: center;
+     }
+     .modal-image{
+      width: 50%;
+      height: 50%;
+      object-fit: cover;
+      object-position: 20% 10%; /* try 20px 10px */
+      align-self: center;
+      justify-content: right;
+     }
+     .modal-header-content{
+      justify-content: center;
+      align-items: stretch;
+     }
+     .modal-div-header{
+      align-self: center;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      vertical-align: middle;
+     }
+     .modal-content{
+      background-color: #39404A;
+      color: white;
+     }
+     .return{
+      font-size: 2rem;
+      color: gray;
+     }
+     .yellow{
+      color: yellow;
+     }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <a href="/"><h5 class="top-key return">Return Back</h5></a>
+    {% block content %}
+    {% if data %}
+    <h1 class="top-key">Results : {{key}}</h1>
+    <div class="container">
+      {%for i in data:%}
+        <a data-toggle="modal" data-target="#myModal{{i}}">
+          <div class="card text-white bg-dark mb-3" style="width: 20rem; height: 30rem;">
+            <img class="card-img-top" src="{{i['Image_Url']}}" alt="Image" onerror="">
+            <h5 class="card-title yellow">{{i['Title']}}</h5>
+            <p class="card-text">{{i['Content'][:100]+"...Read More"}}</p>
+            <p class="card-text yellow">Score : {{i['score']}}</p>
+          </div>
+        </a>
+        <div id="myModal{{i}}" class="modal fade" role="dialog">
+          <div class="modal-dialog  modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <img class="modal-image" src="{{i['Image_Url']}}" alt="Image">
+                <div class="modal-div-header">
+                  <h4 class="modal-header-content">{{i['Title']}}</h4>
+                  <br>
+                  <h4 class="modal-header-content">Score : {{i['score']}}</h4>
+                  <br>
+                  <h6><a href="{{i['Url']}}" target="_blank">View Full article Article</a></h5>
+                </div>
+              </div>
+              <div class="modal-body">
+                <p>{{i['Content']}}</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="close" style="color: red" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      {%endfor%}
+    </div>
+      <form method="post" action="/">
+        <br />
+        <input type="hidden" name="sentence" value="{{key}}" />
+        <input type="hidden" name="page" value ="{{page+1}}"/>
+        <br />
+        <input type="submit" value="Next Page" />
+      </form>
+        {% endif %}
+  {% endblock content %}
+  </body>
+</html>
